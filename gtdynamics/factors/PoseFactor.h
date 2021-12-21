@@ -60,10 +60,9 @@ class TempPoseFactor : public gtsam::NoiseModelFactor {
   TempPoseFactor(const gtsam::SharedNoiseModel &cost_model,
                  const JointConstSharedPtr &joint, int time)
       : Base(cost_model,
-             cref_list_of<3>(
-                 internal::PoseKey(joint->parent()->id(), time).key())(
-                 internal::PoseKey(joint->child()->id(), time).key())(
-                 internal::JointAngleKey(joint->id(), time).key())),
+             cref_list_of<3>(PoseKey(joint->parent()->id(), time).key())(
+                 PoseKey(joint->child()->id(), time).key())(
+                 JointAngleKey(joint->id(), time).key())),
         t_(time),
         joint_(joint) {}
 
@@ -169,17 +168,17 @@ inline gtsam::NoiseModelFactor::shared_ptr PoseFactor(
       cost_model, gtsam::Vector6::Zero(), joint->poseConstraint(time));
 }
 
-  /**
-   * Create single factor relating this link's pose (COM) with previous one.
-   * Note: this function is provided for BW compatibility only, and will in time
-   * be replaced with EqualityConstraint.
-   * 
-   * @param wTp_key Key for parent link's CoM pose in world frame.
-   * @param wTc_key Key for child link's CoM pose in world frame.
-   * @param q_key Key for joint value.
-   * @param cost_model The noise model for this factor.
-   * @param joint The joint connecting the two poses
-   */
+/**
+ * Create single factor relating this link's pose (COM) with previous one.
+ * Note: this function is provided for BW compatibility only, and will in time
+ * be replaced with EqualityConstraint.
+ *
+ * @param wTp_key Key for parent link's CoM pose in world frame.
+ * @param wTc_key Key for child link's CoM pose in world frame.
+ * @param q_key Key for joint value.
+ * @param cost_model The noise model for this factor.
+ * @param joint The joint connecting the two poses
+ */
 inline gtsam::NoiseModelFactor::shared_ptr PoseFactor(
     DynamicsSymbol wTp_key, DynamicsSymbol wTc_key, DynamicsSymbol q_key,
     const gtsam::noiseModel::Base::shared_ptr &cost_model,
