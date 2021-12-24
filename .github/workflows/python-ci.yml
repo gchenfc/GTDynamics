@@ -1,6 +1,6 @@
 name: Python CI
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
         # Github Actions requires a single row to be added to the build matrix.
         # See https://help.github.com/en/articles/workflow-syntax-for-github-actions.
         name:
-          [ubuntu-18.04-gcc-9, ubuntu-18.04-clang-10, macOS-10.15-xcode-11.3.1]
+          [macOS-10.15-xcode-11.3.1]
 
         build_type: [Debug, Release]
         python_version: [3]
@@ -131,3 +131,10 @@ jobs:
       - name: Test
         run: make -j4 python-test
         working-directory: ./build
+
+      - name: Debug
+        run: |
+          python -c 'import gtsam; print(gtsam.__path__)'
+          python -c 'import gtdynamics; print(gtdynamics.__path__)'
+          otool -l $(python -c 'import gtsam; print(gtsam.__path__[0])')/gtsam.cpython-39-darwin.so
+          otool -l $(python -c 'import gtdynamics; print(gtdynamics.__path__[0])'/gtdynamics.cpython-39-darwin.so
