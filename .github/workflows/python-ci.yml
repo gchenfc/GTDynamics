@@ -138,3 +138,4 @@ jobs:
           python -c 'import gtdynamics; print(gtdynamics.__path__)'
           otool -l $(python -c 'import gtsam; print(gtsam.__path__[0])')/gtsam.cpython-39-darwin.so
           otool -l $(python -c 'import gtdynamics; print(gtdynamics.__path__[0])'/gtdynamics.cpython-39-darwin.so
+
